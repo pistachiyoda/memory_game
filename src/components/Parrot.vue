@@ -7,20 +7,24 @@
 <script>
 export default {
   props: {
-    parrot: String
+    parrot: String,
+    is_clicked: Boolean,
+    parrot_index: Number
   },
   data: function() {
-    return {
-      is_clicked: false
-    };
+    return {};
   },
   methods: {
     show_parrot: function() {
+      this.$emit("clicked", this.parrot_index);
+      //console.log(this.parrot_index);
+      /*
       const self = this;
       this.is_clicked = true;
       window.setTimeout(function() {
         self.is_clicked = false;
       }, 2000);
+      */
     }
   }
 };

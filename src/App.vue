@@ -9,7 +9,12 @@
           :key="index"
           class="col-3"
         >
-          <Parrot :parrot="parrot"></Parrot>
+          <Parrot
+            :parrot="parrot"
+            :is_clicked="opened_parrot_index.includes(index)"
+            :parrot_index="index"
+            @clicked="clicked"
+          ></Parrot>
         </div>
       </div>
     </div>
@@ -136,8 +141,20 @@ export default {
   data: function() {
     return {
       parrot_list: [],
-      shuffled_parrot_list: []
+      shuffled_parrot_list: [],
+      opened_parrot_index: []
     };
+  },
+  methods: {
+    clicked: function(index) {
+      this.opened_parrot_index.push(index);
+      if (this.opened_parrot_index.length == 2) {
+        const self = this;
+        window.setTimeout(function() {
+          self.opened_parrot_index = [];
+        }, 2000);
+      }
+    }
   },
   created: function() {
     const random_parrots = _.sampleSize(parrot_master, 8);
