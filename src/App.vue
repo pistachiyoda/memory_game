@@ -147,6 +147,7 @@ export default {
   },
   methods: {
     clicked: function(index) {
+      if (this.opened_parrot_index.length >= 2) return;
       this.opened_parrot_index.push(index);
       if (this.opened_parrot_index.length == 2) {
         const self = this;
