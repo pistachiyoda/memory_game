@@ -17,18 +17,11 @@
             :is_clicked="
               opened_parrot.some(obj => {
                 return obj.parrot_index === index;
-              })
+              }) || matched_parrot.includes(parrot)
             "
             @clicked="clicked"
           ></Parrot>
-          <!--
-          <Parrot
-            :parrot="parrot"
-            :is_clicked="opened_parrot_index.includes(index)"
-            :parrot_index="index"
-            @clicked="clicked"
-          ></Parrot>
-        --></div>
+        </div>
       </div>
     </div>
   </div>
@@ -155,7 +148,8 @@ export default {
     return {
       parrot_list: [],
       shuffled_parrot_list: [],
-      opened_parrot: []
+      opened_parrot: [],
+      matched_parrot: []
     };
   },
   methods: {
@@ -165,8 +159,11 @@ export default {
       if (this.opened_parrot.length == 1) return;
       if (
         this.is_same(this.opened_parrot[0].parrot, this.opened_parrot[1].parrot)
-      )
+      ) {
+        this.matched_parrot.push(this.opened_parrot[0].parrot);
+        this.opened_parrot = [];
         return;
+      }
       const self = this;
       window.setTimeout(function() {
         self.opened_parrot = [];

@@ -7,9 +7,7 @@
 <script>
 export default {
   props: {
-    //parrot: String,
     is_clicked: Boolean,
-    //parrot_index: Number,
     parrot_info: {
       parrot_index: Number,
       parrot: String
@@ -20,7 +18,6 @@ export default {
   },
   methods: {
     show_parrot: function() {
-      //this.$emit("clicked", this.parrot_index);
       this.$emit("clicked", this.parrot_info);
     }
   }
