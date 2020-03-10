@@ -1,30 +1,27 @@
 <template>
   <div class="wrapper" @click="show_parrot">
     <img v-if="!this.is_clicked" />
-    <img v-else :src="parrot" />
+    <img v-else :src="parrot_info.parrot" />
   </div>
 </template>
 <script>
 export default {
   props: {
-    parrot: String,
+    //parrot: String,
     is_clicked: Boolean,
-    parrot_index: Number
+    //parrot_index: Number,
+    parrot_info: {
+      parrot_index: Number,
+      parrot: String
+    }
   },
   data: function() {
     return {};
   },
   methods: {
     show_parrot: function() {
-      this.$emit("clicked", this.parrot_index);
-      //console.log(this.parrot_index);
-      /*
-      const self = this;
-      this.is_clicked = true;
-      window.setTimeout(function() {
-        self.is_clicked = false;
-      }, 2000);
-      */
+      //this.$emit("clicked", this.parrot_index);
+      this.$emit("clicked", this.parrot_info);
     }
   }
 };

@@ -10,12 +10,25 @@
           class="col-3"
         >
           <Parrot
+            :parrot_info="{
+              parrot_index: index,
+              parrot: parrot
+            }"
+            :is_clicked="
+              opened_parrot.some(obj => {
+                return obj.parrot_index === index;
+              })
+            "
+            @clicked="clicked"
+          ></Parrot>
+          <!--
+          <Parrot
             :parrot="parrot"
             :is_clicked="opened_parrot_index.includes(index)"
             :parrot_index="index"
             @clicked="clicked"
           ></Parrot>
-        </div>
+        --></div>
       </div>
     </div>
   </div>
@@ -142,19 +155,25 @@ export default {
     return {
       parrot_list: [],
       shuffled_parrot_list: [],
-      opened_parrot_index: []
+      opened_parrot: []
     };
   },
   methods: {
-    clicked: function(index) {
-      if (this.opened_parrot_index.length >= 2) return;
-      this.opened_parrot_index.push(index);
-      if (this.opened_parrot_index.length == 2) {
-        const self = this;
-        window.setTimeout(function() {
-          self.opened_parrot_index = [];
-        }, 2000);
-      }
+    clicked: function(parrot_info) {
+      if (this.opened_parrot.length >= 2) return;
+      this.opened_parrot.push(parrot_info);
+      if (this.opened_parrot.length == 1) return;
+      if (
+        this.is_same(this.opened_parrot[0].parrot, this.opened_parrot[1].parrot)
+      )
+        return;
+      const self = this;
+      window.setTimeout(function() {
+        self.opened_parrot = [];
+      }, 2000);
+    },
+    is_same: function(parrot1, parrot2) {
+      return parrot1 === parrot2;
     }
   },
   created: function() {
