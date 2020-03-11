@@ -2,13 +2,10 @@
   <div id="app">
     <h1>Memory Game</h1>
     <h2>Parrot ver.</h2>
+    <div>Time:{{ count }}</div>
     <div class="container">
       <div class="row">
-        <div
-          v-for="(parrot, index) in shuffled_parrot_list"
-          :key="index"
-          class="col-3"
-        >
+        <div v-for="(parrot, index) in shuffled_parrot_list" :key="index" class="col-3">
           <Parrot
             :parrot_info="{
               parrot_index: index,
@@ -146,6 +143,8 @@ export default {
   },
   data: function() {
     return {
+      is_start: false,
+      count: 0,
       parrot_list: [],
       shuffled_parrot_list: [],
       opened_parrot: [],
@@ -154,6 +153,8 @@ export default {
   },
   methods: {
     clicked: function(parrot_info) {
+      if (!this.is_start) this.timer();
+      if (!this.is_start) this.is_start = true;
       if (this.opened_parrot.length >= 2) return;
       this.opened_parrot.push(parrot_info);
       if (this.opened_parrot.length == 1) return;
@@ -171,6 +172,12 @@ export default {
     },
     is_same: function(parrot1, parrot2) {
       return parrot1 === parrot2;
+    },
+    timer: function() {
+      const self = this;
+      setInterval(function() {
+        self.count++;
+      }, 1000);
     }
   },
   created: function() {
