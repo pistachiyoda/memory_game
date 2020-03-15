@@ -148,7 +148,9 @@ export default {
       parrot_list: [],
       shuffled_parrot_list: [],
       opened_parrot: [],
-      matched_parrot: []
+      matched_parrot: [],
+      pairs: 8,
+      interval_id: 0
     };
   },
   methods: {
@@ -163,6 +165,16 @@ export default {
       ) {
         this.matched_parrot.push(this.opened_parrot[0].parrot);
         this.opened_parrot = [];
+        if (this.matched_parrot.length === this.pairs) {
+          const self = this;
+          window.setTimeout(function() {
+            alert("おめでとう！");
+            self.matched_parrot = [];
+            self.is_start = false;
+            clearInterval(self.interval_id);
+            self.count = 0;
+          }, 100);
+        }
         return;
       }
       const self = this;
@@ -175,7 +187,7 @@ export default {
     },
     timer: function() {
       const self = this;
-      setInterval(function() {
+      self.interval_id = setInterval(function() {
         self.count++;
       }, 1000);
     }
