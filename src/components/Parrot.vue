@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" @click="show_parrot">
     <img v-if="!this.is_clicked" />
-    <img v-else :src="parrot_info.parrot" />
+    <img v-else :src="parrot_info.parrot_name" />
   </div>
 </template>
 <script>
@@ -10,7 +10,7 @@ export default {
     is_clicked: Boolean,
     parrot_info: {
       parrot_index: Number,
-      parrot: String
+      parrot_name: String
     }
   },
   data: function() {

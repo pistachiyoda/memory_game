@@ -2,20 +2,16 @@
   <div id="app">
     <h1>Memory Game</h1>
     <h2>Parrot ver.</h2>
-    <div>Time:{{ count }}</div>
+    <div>Time:{{ timer.time }}</div>
     <div class="container">
       <div class="row">
-        <div v-for="(parrot, index) in shuffled_parrot_list" :key="index" class="col-3">
+        <div v-for="(parrot_name, index) in shuffled_parrot_list" :key="index" class="col-3">
           <Parrot
             :parrot_info="{
               parrot_index: index,
-              parrot: parrot
+              parrot_name: parrot_name 
             }"
-            :is_clicked="
-              opened_parrot.some(obj => {
-                return obj.parrot_index === index;
-              }) || matched_parrot.includes(parrot)
-            "
+            :is_clicked="is_opened(index)"
             @clicked="clicked"
           ></Parrot>
         </div>
@@ -27,6 +23,7 @@
 <script>
 import Parrot from "./components/Parrot.vue";
 import _ from "lodash";
+import { Timer } from "./timer";
 const parrot_master = [
   "/images/60fpsparrot.gif",
   "/images/angelparrot.gif",
@@ -144,26 +141,31 @@ export default {
   data: function() {
     return {
       is_start: false,
-      count: 0,
+      timer: new Timer(),
       parrot_list: [],
       shuffled_parrot_list: [],
       opened_parrot: [],
       matched_parrot: [],
-      pairs: 8,
-      interval_id: 0
+      pairs: 8
     };
   },
   methods: {
     clicked: function(parrot_info) {
-      if (!this.is_start) this.timer();
+      //if (!this.is_start) this.timer.start();
       if (!this.is_start) this.is_start = true;
       if (this.opened_parrot.length >= 2) return;
+      if (
+        this.opened_parrot
+          .map(obj => obj.parrot_index)
+          .includes(parrot_info.parrot_index)
+      )
+        return;
       this.opened_parrot.push(parrot_info);
       if (this.opened_parrot.length == 1) return;
-      if (
-        this.is_same(this.opened_parrot[0].parrot, this.opened_parrot[1].parrot)
-      ) {
-        this.matched_parrot.push(this.opened_parrot[0].parrot);
+      if (this.is_same(this.opened_parrot[0], this.opened_parrot[1])) {
+        this.matched_parrot.push(this.opened_parrot[0]);
+        this.matched_parrot.push(this.opened_parrot[1]);
+        console.log(this.matched_parrot);
         this.opened_parrot = [];
         if (this.matched_parrot.length === this.pairs) {
           const self = this;
@@ -171,8 +173,7 @@ export default {
             alert("おめでとう！");
             self.matched_parrot = [];
             self.is_start = false;
-            clearInterval(self.interval_id);
-            self.count = 0;
+            this.timer.end();
           }, 100);
         }
         return;
@@ -182,14 +183,14 @@ export default {
         self.opened_parrot = [];
       }, 2000);
     },
-    is_same: function(parrot1, parrot2) {
-      return parrot1 === parrot2;
+    is_opened: function(index) {
+      const x = [...this.opened_parrot, ...this.matched_parrot].some(
+        obj => obj.parrot_index === index
+      );
+      return x;
     },
-    timer: function() {
-      const self = this;
-      self.interval_id = setInterval(function() {
-        self.count++;
-      }, 1000);
+    is_same: function(parrot1, parrot2) {
+      return parrot1.parrot_name === parrot2.parrot_name;
     }
   },
   created: function() {
