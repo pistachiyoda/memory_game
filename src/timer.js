@@ -10,5 +10,7 @@ export class Timer {
   }
   end() {
     clearInterval(this.interval_id);
+    this.time = 0;
+    this.interval_id = null;
   }
 }

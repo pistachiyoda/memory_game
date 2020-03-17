@@ -146,13 +146,15 @@ export default {
       shuffled_parrot_list: [],
       opened_parrot: [],
       matched_parrot: [],
-      pairs: 8
+      total_parrot: 16
     };
   },
   methods: {
     clicked: function(parrot_info) {
-      //if (!this.is_start) this.timer.start();
-      if (!this.is_start) this.is_start = true;
+      if (!this.is_start) {
+        this.timer.start();
+        this.is_start = true;
+      }
       if (this.opened_parrot.length >= 2) return;
       if (
         this.opened_parrot
@@ -165,15 +167,13 @@ export default {
       if (this.is_same(this.opened_parrot[0], this.opened_parrot[1])) {
         this.matched_parrot.push(this.opened_parrot[0]);
         this.matched_parrot.push(this.opened_parrot[1]);
-        console.log(this.matched_parrot);
         this.opened_parrot = [];
-        if (this.matched_parrot.length === this.pairs) {
+        if (this.matched_parrot.length === this.total_parrot) {
           const self = this;
           window.setTimeout(function() {
             alert("おめでとう！");
             self.matched_parrot = [];
-            self.is_start = false;
-            this.timer.end();
+            self.timer.end();
           }, 100);
         }
         return;
