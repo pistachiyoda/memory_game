@@ -23,10 +23,16 @@ export default {
   }
 };
 </script>
-<style>
-.wrapper {
-  height: 128px;
-  width: 128px;
-  border: medium solid black;
+<style scoped>
+img {
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    width: 120px;
+    height: 120px;
+    border: medium solid #707070;
+  }
 }
 </style>

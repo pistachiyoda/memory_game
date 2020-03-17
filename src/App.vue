@@ -1,20 +1,21 @@
 <template>
   <div id="app">
-    <h1>Memory Game</h1>
-    <h2>Parrot ver.</h2>
-    <div>Time:{{ timer.time }}</div>
-    <div class="container">
-      <div class="row">
-        <div v-for="(parrot_name, index) in shuffled_parrot_list" :key="index" class="col-3">
-          <Parrot
-            :parrot_info="{
+    <h1 class="m-4 pl-5">Parrot Memory Game</h1>
+    <div class="timer mb-4">Time : {{ timer.time }} sec</div>
+    <div class="board d-flex flex-wrap justify-content-between">
+      <div
+        v-for="(parrot_name, index) in shuffled_parrot_list"
+        :key="index"
+        class="parrot_wrapper m-1"
+      >
+        <Parrot
+          :parrot_info="{
               parrot_index: index,
               parrot_name: parrot_name 
             }"
-            :is_clicked="is_opened(index)"
-            @clicked="clicked"
-          ></Parrot>
-        </div>
+          :is_clicked="is_opened(index)"
+          @clicked="clicked"
+        ></Parrot>
       </div>
     </div>
   </div>
@@ -204,4 +205,24 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+* {
+  font-family: "Indie Flower", cursive;
+}
+@media screen and (min-width: 768px) {
+  .timer {
+    width: 680px;
+    margin: auto;
+    font-size: 25px;
+  }
+  .board {
+    width: 680px;
+    height: 500px;
+    margin: auto;
+  }
+  .parrot_wrapper {
+    width: 130px;
+    height: 130px;
+  }
+}
+</style>
