@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1 class="m-4 pl-5">Parrot Memory Game</h1>
+    <h1 class="ml-2 mt-4">Parrot Memory Game</h1>
     <div class="timer mb-4">Time : {{ timer.time }} sec</div>
     <div class="board d-flex flex-wrap justify-content-between">
       <div
@@ -209,6 +209,22 @@ export default {
 * {
   font-family: "Indie Flower", cursive;
 }
+
+.timer {
+  width: 350px;
+  margin: auto;
+  font-size: 25px;
+}
+.board {
+  width: 350px;
+  height: 350px;
+  margin: auto;
+}
+.parrot_wrapper {
+  width: 70px;
+  height: 70px;
+}
+
 @media screen and (min-width: 768px) {
   .timer {
     width: 680px;
