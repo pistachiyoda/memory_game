@@ -10,9 +10,9 @@
       >
         <Parrot
           :parrot_info="{
-              parrot_index: index,
-              parrot_name: parrot_name 
-            }"
+            parrot_index: index,
+            parrot_name: parrot_name
+          }"
           :is_clicked="is_opened(index)"
           @clicked="clicked"
         ></Parrot>
@@ -22,9 +22,10 @@
 </template>
 
 <script>
-import Parrot from "./components/Parrot.vue";
 import _ from "lodash";
+import Parrot from "./components/Parrot.vue";
 import { Timer } from "./timer";
+
 const parrot_master = [
   "/images/60fpsparrot.gif",
   "/images/angelparrot.gif",
@@ -139,7 +140,7 @@ export default {
   components: {
     Parrot
   },
-  data: function() {
+  data() {
     return {
       is_start: false,
       timer: new Timer(),
@@ -151,7 +152,7 @@ export default {
     };
   },
   methods: {
-    clicked: function(parrot_info) {
+    clicked(parrot_info) {
       if (!this.is_start) {
         this.timer.start();
         this.is_start = true;
@@ -171,7 +172,7 @@ export default {
         this.opened_parrot = [];
         if (this.matched_parrot.length === this.total_parrot) {
           const self = this;
-          window.setTimeout(function() {
+          window.setTimeout(() => {
             alert("おめでとう！");
             self.matched_parrot = [];
             self.timer.end();
@@ -180,21 +181,21 @@ export default {
         return;
       }
       const self = this;
-      window.setTimeout(function() {
+      window.setTimeout(() => {
         self.opened_parrot = [];
       }, 2000);
     },
-    is_opened: function(index) {
+    is_opened(index) {
       const x = [...this.opened_parrot, ...this.matched_parrot].some(
         obj => obj.parrot_index === index
       );
       return x;
     },
-    is_same: function(parrot1, parrot2) {
+    is_same(parrot1, parrot2) {
       return parrot1.parrot_name === parrot2.parrot_name;
     }
   },
-  created: function() {
+  created() {
     const random_parrots = _.sampleSize(parrot_master, 8);
     this.parrot_list = random_parrots;
     this.shuffled_parrot_list = _.shuffle([
