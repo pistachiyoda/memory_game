@@ -153,27 +153,32 @@ export default {
   },
   methods: {
     clicked(parrotInfo) {
+      if (!this.is_valid_state(parrotInfo)) return;
       if (!this.is_start) {
         this.timer.start();
         this.is_start = true;
       }
-      if (this.opened_parrot.length >= 2) return;
-      if (
-        this.opened_parrot
-          .map(obj => obj.parrot_index)
-          .includes(parrotInfo.parrot_index)
-      )
-        return;
       this.opened_parrot.push(parrotInfo);
       if (this.opened_parrot.length === 1) return;
+      // 以下の処理は2つ以上開かれている場合での処理のため、一つ開かれている状態なら、以下の処理は実行しない
       if (this.is_same(this.opened_parrot[0], this.opened_parrot[1])) {
-        this.add_matched_parrot(this.opened_parrot[0], this.opened_parrot[1]);
+        this.match(this.opened_parrot[0], this.opened_parrot[1]);
         return;
       }
       const self = this;
       window.setTimeout(() => {
         self.opened_parrot = [];
       }, 2000);
+    },
+    is_valid_state(parrotInfo) {
+      if (this.opened_parrot.length >= 2) return false;
+      if (
+        this.opened_parrot
+          .map(obj => obj.parrot_index)
+          .includes(parrotInfo.parrot_index)
+      )
+        return false;
+      return true;
     },
     is_opened(index) {
       const x = [...this.opened_parrot, ...this.matched_parrot].some(
@@ -184,7 +189,7 @@ export default {
     is_same(parrot1, parrot2) {
       return parrot1.parrot_name === parrot2.parrot_name;
     },
-    add_matched_parrot(parrot1, parrot2) {
+    match(parrot1, parrot2) {
       this.matched_parrot.push(parrot1);
       this.matched_parrot.push(parrot2);
       this.opened_parrot = [];
