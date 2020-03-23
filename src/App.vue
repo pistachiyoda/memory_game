@@ -9,7 +9,7 @@
         class="parrot_wrapper m-1"
       >
         <Parrot
-          :parrot_info="{
+          :parrotInfo="{
             parrot_index: index,
             parrot_name: parrot_name
           }"
@@ -23,10 +23,10 @@
 
 <script>
 import _ from "lodash";
+import Timer from "./timer";
 import Parrot from "./components/Parrot.vue";
-import { Timer } from "./timer";
 
-const parrot_master = [
+const parrotMaster = [
   "/images/60fpsparrot.gif",
   "/images/angelparrot.gif",
   "/images/angryparrot.gif",
@@ -152,7 +152,7 @@ export default {
     };
   },
   methods: {
-    clicked(parrot_info) {
+    clicked(parrotInfo) {
       if (!this.is_start) {
         this.timer.start();
         this.is_start = true;
@@ -161,23 +161,13 @@ export default {
       if (
         this.opened_parrot
           .map(obj => obj.parrot_index)
-          .includes(parrot_info.parrot_index)
+          .includes(parrotInfo.parrot_index)
       )
         return;
-      this.opened_parrot.push(parrot_info);
-      if (this.opened_parrot.length == 1) return;
+      this.opened_parrot.push(parrotInfo);
+      if (this.opened_parrot.length === 1) return;
       if (this.is_same(this.opened_parrot[0], this.opened_parrot[1])) {
-        this.matched_parrot.push(this.opened_parrot[0]);
-        this.matched_parrot.push(this.opened_parrot[1]);
-        this.opened_parrot = [];
-        if (this.matched_parrot.length === this.total_parrot) {
-          const self = this;
-          window.setTimeout(() => {
-            alert("おめでとう！");
-            self.matched_parrot = [];
-            self.timer.end();
-          }, 100);
-        }
+        this.add_matched_parrot(this.opened_parrot[0], this.opened_parrot[1]);
         return;
       }
       const self = this;
@@ -193,15 +183,28 @@ export default {
     },
     is_same(parrot1, parrot2) {
       return parrot1.parrot_name === parrot2.parrot_name;
+    },
+    add_matched_parrot(parrot1, parrot2) {
+      this.matched_parrot.push(parrot1);
+      this.matched_parrot.push(parrot2);
+      this.opened_parrot = [];
+      if (this.matched_parrot.length === this.total_parrot) {
+        this.finish();
+      }
+    },
+    finish() {
+      const self = this;
+      window.setTimeout(() => {
+        alert("おめでとう！");
+        self.matched_parrot = [];
+        self.timer.end();
+      }, 100);
     }
   },
   created() {
-    const random_parrots = _.sampleSize(parrot_master, 8);
-    this.parrot_list = random_parrots;
-    this.shuffled_parrot_list = _.shuffle([
-      ...random_parrots,
-      ...random_parrots
-    ]);
+    const randomParrots = _.sampleSize(parrotMaster, 8);
+    this.parrot_list = randomParrots;
+    this.shuffled_parrot_list = _.shuffle([...randomParrots, ...randomParrots]);
   }
 };
 </script>
