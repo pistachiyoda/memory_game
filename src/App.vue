@@ -216,6 +216,7 @@ export default {
     },
     finish() {
       const self = this;
+      this.is_start = false;
       window.setTimeout(() => {
         alert("おめでとう！");
         self.matched_parrot = [];
