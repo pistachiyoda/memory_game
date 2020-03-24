@@ -148,11 +148,16 @@ export default {
       shuffled_parrot_list: [],
       opened_parrot: [],
       matched_parrot: [],
-      total_parrot: 16
+      total_parrot: 16,
+      time_out_id: null
     };
   },
   methods: {
     clicked(parrotInfo) {
+      if (this.is_open_different_parrot()) {
+        this.opened_parrot = [];
+        clearTimeout(this.time_out_id);
+      }
       if (!this.is_valid_state(parrotInfo)) return;
       if (!this.is_start) {
         this.timer.start();
@@ -165,20 +170,26 @@ export default {
         this.match(this.opened_parrot[0], this.opened_parrot[1]);
         return;
       }
-      const self = this;
-      window.setTimeout(() => {
-        self.opened_parrot = [];
-      }, 2000);
+      this.different();
     },
     is_valid_state(parrotInfo) {
       if (this.opened_parrot.length >= 2) return false;
       if (
+        //
         this.opened_parrot
           .map(obj => obj.parrot_index)
           .includes(parrotInfo.parrot_index)
       )
         return false;
       return true;
+    },
+    is_open_different_parrot() {
+      if (
+        this.opened_parrot.length === 2 &&
+        this.opened_parrot[0].parrot_name !== this.opened_parrot[1].parrot_name
+      )
+        return true;
+      return false;
     },
     is_opened(index) {
       const x = [...this.opened_parrot, ...this.matched_parrot].some(
@@ -196,6 +207,12 @@ export default {
       if (this.matched_parrot.length === this.total_parrot) {
         this.finish();
       }
+    },
+    different() {
+      const self = this;
+      this.time_out_id = window.setTimeout(() => {
+        self.opened_parrot = [];
+      }, 2000);
     },
     finish() {
       const self = this;
