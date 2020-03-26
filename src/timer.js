@@ -12,6 +12,9 @@ export default class Timer {
 
   end() {
     clearInterval(this.interval_id);
+  }
+
+  clear() {
     this.time = 0;
     this.interval_id = null;
   }
