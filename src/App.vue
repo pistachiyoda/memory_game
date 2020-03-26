@@ -217,11 +217,21 @@ export default {
     finish() {
       const self = this;
       this.is_start = false;
+      this.save_data_to_local();
       window.setTimeout(() => {
         alert("おめでとう！");
         self.matched_parrot = [];
         self.timer.end();
       }, 100);
+    },
+    save_data_to_local() {
+      const resultList = localStorage.getItem("results")
+        ? JSON.parse(localStorage.getItem("results"))
+        : [];
+      const jsonResults = JSON.stringify(
+        [...resultList, this.timer.time].sort()
+      );
+      localStorage.setItem("results", jsonResults);
     }
   },
   created() {
