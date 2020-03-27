@@ -64,12 +64,9 @@ export default {
   }
 }
 
-
-// オーバーレイに包含されているモーダルウィンドウのトランジション
 .modal-window {
 transition: opacity 0.4s, transform 0.4s;
 }
-
 
 .modal-enter, .modal-leave-to {
   opacity: 0;
