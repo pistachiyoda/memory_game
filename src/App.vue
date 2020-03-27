@@ -242,8 +242,9 @@ export default {
         ? JSON.parse(localStorage.getItem("results"))
         : [];
       const sortedResultList = [...resultList, this.timer.time / 1000].sort();
-      this.resultList = sortedResultList;
-      const jsonResults = JSON.stringify(sortedResultList);
+      const fiveSortedResultList = sortedResultList.slice(0, 5);
+      this.resultList = fiveSortedResultList;
+      const jsonResults = JSON.stringify(fiveSortedResultList);
       localStorage.setItem("results", jsonResults);
       this.modal = true;
     },
