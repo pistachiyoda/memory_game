@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1 class="ml-2 mt-4">Parrot Memory Game</h1>
-    <div class="timer mb-4">Time : {{ timer.time }} sec</div>
+    <div class="timer mb-4">Time : {{ displaySec }} sec</div>
     <div class="board d-flex flex-wrap justify-content-between">
       <div
         v-for="(parrot_name, index) in shuffled_parrot_list"
@@ -18,6 +18,15 @@
         ></Parrot>
       </div>
     </div>
+    <div class="example-modal-window">
+      <Modal
+        @close="closeModal"
+        v-if="modal"
+        :resultList="resultList"
+        :currentResult="timer.time"
+      >
+      </Modal>
+    </div>
   </div>
 </template>
 
@@ -25,6 +34,7 @@
 import _ from "lodash";
 import Timer from "./timer";
 import Parrot from "./components/Parrot.vue";
+import Modal from "./components/Modal.vue";
 
 const parrotMaster = [
   "/images/60fpsparrot.gif",
@@ -138,7 +148,8 @@ const parrotMaster = [
 export default {
   name: "App",
   components: {
-    Parrot
+    Parrot,
+    Modal
   },
   data() {
     return {
@@ -149,7 +160,10 @@ export default {
       opened_parrot: [],
       matched_parrot: [],
       total_parrot: 16,
-      time_out_id: null
+      resultList: [],
+      time_out_id: null,
+      modal: false,
+      message: ""
     };
   },
   methods: {
@@ -217,11 +231,34 @@ export default {
     finish() {
       const self = this;
       this.is_start = false;
+      this.save_data_to_local();
       window.setTimeout(() => {
-        alert("おめでとう！");
         self.matched_parrot = [];
         self.timer.end();
-      }, 100);
+      }, 0);
+    },
+    save_data_to_local() {
+      const resultList = localStorage.getItem("results")
+        ? JSON.parse(localStorage.getItem("results"))
+        : [];
+      const sortedResultList = [...resultList, this.timer.time / 1000].sort();
+      this.resultList = sortedResultList;
+      const jsonResults = JSON.stringify(sortedResultList);
+      localStorage.setItem("results", jsonResults);
+      this.modal = true;
+    },
+    // modal関連
+    openModal() {
+      this.modal = true;
+    },
+    closeModal() {
+      this.modal = false;
+      this.timer.clear();
+    }
+  },
+  computed: {
+    displaySec() {
+      return this.timer.time / 1000;
     }
   },
   created() {
