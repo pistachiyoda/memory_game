@@ -76,4 +76,13 @@ transition: opacity 0.4s, transform 0.4s;
     transform: translateY(-20px);
   }
 }
+
+@media screen and (min-width: 768px) {
+    .modal {
+    &-window {
+        width: 300px;
+        font-size: 2em;
+    }
+    }
+}
 </style>
