@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1 class="ml-2 mt-4">Parrot Memory Game</h1>
-    <div class="timer mb-4">Time : {{ timer.time }} sec</div>
+    <div class="timer mb-4">Time : {{ displaySec }} sec</div>
     <div class="board d-flex flex-wrap justify-content-between">
       <div
         v-for="(parrot_name, index) in shuffled_parrot_list"
@@ -235,13 +235,13 @@ export default {
       window.setTimeout(() => {
         self.matched_parrot = [];
         self.timer.end();
-      }, 100);
+      }, 0);
     },
     save_data_to_local() {
       const resultList = localStorage.getItem("results")
         ? JSON.parse(localStorage.getItem("results"))
         : [];
-      const sortedResultList = [...resultList, this.timer.time].sort();
+      const sortedResultList = [...resultList, this.timer.time / 1000].sort();
       this.resultList = sortedResultList;
       const jsonResults = JSON.stringify(sortedResultList);
       localStorage.setItem("results", jsonResults);
@@ -254,6 +254,11 @@ export default {
     closeModal() {
       this.modal = false;
       this.timer.clear();
+    }
+  },
+  computed: {
+    displaySec() {
+      return this.timer.time / 1000;
     }
   },
   created() {

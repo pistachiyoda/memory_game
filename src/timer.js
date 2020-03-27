@@ -6,8 +6,8 @@ export default class Timer {
 
   start() {
     this.interval_id = setInterval(() => {
-      this.time += 1;
-    }, 1000);
+      this.time += 10;
+    }, 10);
   }
 
   end() {

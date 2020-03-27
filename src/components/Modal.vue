@@ -4,17 +4,20 @@
       <div class="modal-window">
         <div class="modal-content">
           <p>self ranking</p>
-          <div v-for="(result, index) in resultList" :key="index">
+          <div
+            v-for="(result, index) in resultList"
+            :key="index"
+            :class="{
+              'border border-primary': result * 1000 === currentResult
+            }"
+          >
             <div class="d-inline">{{ index + 1 }}:</div>
-            <div
-              class="d-inline mx-1"
-              :class="{ 'bg-info': result === currentResult }"
-            >
+            <div class="d-inline mx-1">
               {{ result }}
             </div>
             <div class="d-inline">sec</div>
           </div>
-          <button @click="$emit('close')">close</button>
+          <button @click="$emit('close')" class="mt-2">close</button>
         </div>
       </div>
     </div>
