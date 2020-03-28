@@ -176,7 +176,6 @@ export default {
       ]);
     },
     clicked(parrotInfo) {
-      // this.finish();
       if (this.is_open_different_parrot()) {
         this.opened_parrot = [];
         clearTimeout(this.time_out_id);
