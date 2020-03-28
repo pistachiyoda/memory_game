@@ -3,21 +3,26 @@
     <div class="modal modal-overlay" @click.self="$emit('close')">
       <div class="modal-window">
         <div class="modal-content">
-          <p>self ranking</p>
-          <div
-            v-for="(result, index) in resultList"
-            :key="index"
-            :class="{
+          <div class="font-weight-bold">
+            <div class="border-bottom pb-1 mb-2">Self Ranking</div>
+            <div v-if="isRankOut">
+              <div>Out of Rank!</div>
+              <div class="mb-3">Your time is {{ currentResult/1000 }}sec 🤨</div>
+            </div>
+          </div>
+          <ol>
+            <li
+              v-for="(result, index) in resultList"
+              :key="index"
+              :class="{
               'border border-primary': result * 1000 === currentResult
             }"
-          >
-            <div class="d-inline">{{ index + 1 }}:</div>
-            <div class="d-inline mx-1">
-              {{ result }}
-            </div>
-            <div class="d-inline">sec</div>
-          </div>
-          <button @click="$emit('close')" class="mt-2">close</button>
+            >
+              <div class="d-inline mx-1">{{ result }}</div>
+              <div class="d-inline">sec</div>
+            </li>
+          </ol>
+          <button @click="$emit('close')" class="mt-2 btn btn-info">close</button>
         </div>
       </div>
     </div>
@@ -27,11 +32,16 @@
 export default {
   props: {
     resultList: null,
-    currentResult: null
+    currentResult: null,
+    isRankOut: null
   }
 };
 </script>
 <style lang="stylus" scoped>
+li {
+  line-height: 1.15;
+}
+
 .modal {
   &.modal-overlay {
     display: flex;
@@ -50,7 +60,7 @@ export default {
     background: #fff;
     border-radius: 4px;
     overflow: hidden;
-    width: 200px;
+    width: 250px;
   }
 
   &-content {
@@ -65,7 +75,7 @@ export default {
 }
 
 .modal-window {
-transition: opacity 0.4s, transform 0.4s;
+  transition: opacity 0.4s, transform 0.4s;
 }
 
 .modal-enter, .modal-leave-to {
@@ -78,11 +88,15 @@ transition: opacity 0.4s, transform 0.4s;
 }
 
 @media screen and (min-width: 768px) {
-    .modal {
+  button {
+    font-size: 30px;
+  }
+
+  .modal {
     &-window {
-        width: 300px;
-        font-size: 2em;
+      width: 380px;
+      font-size: 30px;
     }
-    }
+  }
 }
 </style>
