@@ -24,8 +24,8 @@
         v-if="modal"
         :resultList="resultList"
         :currentResult="timer.time"
-      >
-      </Modal>
+        :isRankOut="is_rank_out"
+      ></Modal>
     </div>
   </div>
 </template>
@@ -163,7 +163,7 @@ export default {
       resultList: [],
       time_out_id: null,
       modal: false,
-      message: ""
+      is_rank_out: false
     };
   },
   methods: {
@@ -176,6 +176,7 @@ export default {
       ]);
     },
     clicked(parrotInfo) {
+      // this.finish();
       if (this.is_open_different_parrot()) {
         this.opened_parrot = [];
         clearTimeout(this.time_out_id);
@@ -255,6 +256,8 @@ export default {
       this.resultList = fiveSortedResultList;
       const jsonResults = JSON.stringify(fiveSortedResultList);
       localStorage.setItem("results", jsonResults);
+      if (fiveSortedResultList[4] < this.timer.time / 1000)
+        this.is_rank_out = true;
       this.modal = true;
     },
     // modal関連
