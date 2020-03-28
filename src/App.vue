@@ -167,6 +167,14 @@ export default {
     };
   },
   methods: {
+    set_random_parrots() {
+      const randomParrots = _.sampleSize(parrotMaster, 8);
+      this.parrot_list = randomParrots;
+      this.shuffled_parrot_list = _.shuffle([
+        ...randomParrots,
+        ...randomParrots
+      ]);
+    },
     clicked(parrotInfo) {
       if (this.is_open_different_parrot()) {
         this.opened_parrot = [];
@@ -231,6 +239,7 @@ export default {
     finish() {
       const self = this;
       this.is_start = false;
+      this.set_random_parrots();
       this.save_data_to_local();
       window.setTimeout(() => {
         self.matched_parrot = [];
@@ -263,9 +272,7 @@ export default {
     }
   },
   created() {
-    const randomParrots = _.sampleSize(parrotMaster, 8);
-    this.parrot_list = randomParrots;
-    this.shuffled_parrot_list = _.shuffle([...randomParrots, ...randomParrots]);
+    this.set_random_parrots();
   }
 };
 </script>
